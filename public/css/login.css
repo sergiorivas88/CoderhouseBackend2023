@@ -2,7 +2,6 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Arial', sans-serif;
-    background-color: #f5f5f5; /* Color de fondo pastel crema */
 }
 
 article {
@@ -19,50 +18,42 @@ form {
     max-width: 400px;
     padding: 20px;
     box-sizing: border-box;
-    background-color: #b0e0e6; /* Color celeste crema */
+    background-color: rgb(166, 25, 176);
     border: 1px solid #000000;
     border-radius: 8px;
 }
 
-.PutEmail {
+.PutEmail{
     max-width: 1000px;
 }
-
 h6 {
-    color: #333; /* Color de texto oscuro */
+    color: white;
 }
-
 h1 {
     margin-bottom: 20px;
-    color: #333; /* Color de texto oscuro */
 }
-
-.buttonText {
-    color: #a52a2a; /* Color marrón oscuro */
+.buttonText{
+    color: rgb(227, 112, 194);
 }
-
-.buttonForm {
-    background-color: #ffe4c4 !important; /* Color pastel crema */
-    border: 1px solid #333 !important; /* Borde oscuro */
+.buttonForm{
+    background-color: rgb(60, 4, 90)!important;
+    border: black !important;
 }
-
-.buttonForm:hover {
-    background-color: #add8e6 !important; /* Color celeste claro al pasar el mouse */
-    color: #333 !important; /* Color de texto oscuro al pasar el mouse */
+.buttonForm:hover{
+    background-color: rgb(246, 182, 225) !important;
+    color: black !important;
 }
-
 input {
     width: 100%;
     padding: 10px;
     margin: 10px 0;
     box-sizing: border-box;
-    border: 1px solid #a52a2a; /* Color marrón oscuro */
+    border: 1px solid rgb(53, 3, 92);
     border-radius: 4px;
 }
 
 footer {
     text-align: center;
-    color: #333; /* Color de texto oscuro */
 }
 
 div {
@@ -71,9 +62,8 @@ div {
 
 h5 {
     margin-bottom: 10px;
-    color: #a52a2a; /* Color marrón oscuro */
+}
+h5:hover{
+    color:blanchedalmond
 }
 
-h5:hover {
-    color: #ffebcd; /* Color blanchedalmond al pasar el mouse */
-}

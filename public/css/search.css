@@ -2,7 +2,7 @@
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
-    background-color: #ffe4c4 !important; /* Color pastel crema */
+    background-color: #eaa6cb !important;
     padding: 10px !important;
 }
 
@@ -14,27 +14,21 @@
 input[type="number"] {
     width: 50px !important;
     padding: 5px !important;
-    border: 1px solid #a52a2a; /* Color marrón oscuro */
-    border-radius: 4px;
 }
 
 input[type="text"] {
     padding: 5px !important;
-    border: 1px solid #a52a2a; /* Color marrón oscuro */
-    border-radius: 4px;
 }
 
 button {
     padding: 5px 10px;
     cursor: pointer;
 }
-
 .miniBarButton {
-    background-color: #a52a2a !important; /* Color marrón oscuro */
-    border-color: #333; /* Borde oscuro */
+    background-color: rgb(119, 38, 96) !important;
+    border-color: black;
 }
-
 .miniBarButton:hover {
-    background-color: #201716 !important; /* Color oscuro al pasar el mouse */
-    font-weight: bold;
+    background-color: rgb(32, 3, 22) !important;
+    font-weight:bold;
 }
