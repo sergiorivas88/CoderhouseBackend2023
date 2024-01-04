@@ -1,0 +1,16 @@
+<h1>Ticket Details</h1>
+    <p><strong>Code:</strong> {{ticket.code}}</p>
+    <p><strong>Purchase Date:</strong> {{ticket.purchase_datetime}}</p>
+    <p><strong>Amount:</strong> ${{ticket.amount}}</p>
+    <p><strong>Purchaser:</strong> {{ticket.purchaser}}</p>
+    
+    <h2>Products</h2>
+    <ul>
+        {{#each ticket.products}}
+            <li>
+                <strong>Product ID:</strong> {{this.productId}}, 
+                <strong>Quantity:</strong> {{this.quantity}}
+            </li>
+        {{/each}}
+    </ul>
+    <h3>! This ticket has been send to your email account for you to have it</h3>

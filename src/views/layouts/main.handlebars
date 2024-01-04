@@ -1,0 +1,28 @@
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+        <link rel="stylesheet" href="/css/style.css">
+        <title>{{title}}</title>
+    </head>
+    <body class="{{#if (eq title 'Login')}}login-page{{/if}}{{#if (eq title 'Register')}}register-page{{/if}}{{#if (eq title 'GitHub Login')}}github-login-page{{/if}}{{#if (eq title 'Change Password')}}change-password-page{{/if}}">
+        {{#unless (eq title 'Login')}}{{#unless (eq title 'Register')}}{{#unless (eq title 'GitHub Login')}}{{#unless (eq title 'Change Password')}}
+            <div class="navbar">
+                <div class="navbar-button"><a href="/profile">Profile</a></div>
+                <div class="navbar-button"><a href="/api/carts/{{user.cart}}">Cart</a></div>
+                <div class="navbar-button"><a href="/api/products">Products</a></div>
+                <div class="navbar-button"><a href="/api/chat">Chat</a></div>
+                <div class="navbar-button"><a href="/api/carts">CartList</a></div>
+                <div class="navbar-button"><a href="/mock/mockingProducts">MockingProducts</a></div>
+            </div>
+        {{/unless}}{{/unless}}{{/unless}}{{/unless}}
+
+        <main class="container">
+            {{{body}}}
+        </main>
+    </body>
+    
+</html>
+    

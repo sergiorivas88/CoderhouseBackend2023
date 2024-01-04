@@ -1,0 +1,79 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5; /* Color de fondo pastel crema */
+}
+
+article {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+form {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #b0e0e6; /* Color celeste crema */
+    border: 1px solid #000000;
+    border-radius: 8px;
+}
+
+.PutEmail {
+    max-width: 1000px;
+}
+
+h6 {
+    color: #333; /* Color de texto oscuro */
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #333; /* Color de texto oscuro */
+}
+
+.buttonText {
+    color: #a52a2a; /* Color marrón oscuro */
+}
+
+.buttonForm {
+    background-color: #ffe4c4 !important; /* Color pastel crema */
+    border: 1px solid #333 !important; /* Borde oscuro */
+}
+
+.buttonForm:hover {
+    background-color: #add8e6 !important; /* Color celeste claro al pasar el mouse */
+    color: #333 !important; /* Color de texto oscuro al pasar el mouse */
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    box-sizing: border-box;
+    border: 1px solid #a52a2a; /* Color marrón oscuro */
+    border-radius: 4px;
+}
+
+footer {
+    text-align: center;
+    color: #333; /* Color de texto oscuro */
+}
+
+div {
+    margin-top: 20px;
+}
+
+h5 {
+    margin-bottom: 10px;
+    color: #a52a2a; /* Color marrón oscuro */
+}
+
+h5:hover {
+    color: #add8e6; /* Color celeste claro al pasar el mouse */
+}

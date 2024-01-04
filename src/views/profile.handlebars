@@ -1,0 +1,14 @@
+<article>
+    <header>
+        <h1>Private Zone</h1>
+    </header>
+    <p><strong>Name: </strong>{{user.firstName}}</p>
+    <p><strong>Lastname: </strong> {{user.lastName}}</p>
+    <p><strong>Email: </strong> {{user.email}}</p>
+    <p><strong>Age: </strong> {{user.age}}</p>
+    <p><strong>Role: </strong> {{user.role}}</p>
+    <a href="/api/carts/{{user.cart}}"><button  class="button">My cart</button></a>
+    <footer>
+        <a href="/auth/sessions/logout" role="button" class="button">Logout</a>
+    </footer>
+</article>
