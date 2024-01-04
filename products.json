@@ -1,0 +1,37 @@
+[{
+  "_id": {
+    "$oid": "653d8bcecb28f5f83a75f274"
+  },
+  "title": "HP Castillo",
+  "description": "Juego de Harry potter",
+  "price": 2000,
+  "code": "abcd123434352353",
+  "stock": 14,
+  "status": "true",
+  "category": "Juego",
+  "createdAt": {
+    "$date": "2023-10-28T22:31:42.409Z"
+  },
+  "updatedAt": {
+    "$date": "2023-10-28T22:31:42.409Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6547947b4038deb35759ec7b"
+  },
+  "title": "Barbie Fashionista",
+  "description": "Muñeca Barbie",
+  "price": 50000,
+  "code": "Barbie2023",
+  "stock": 203,
+  "status": "true",
+  "category": "Juguete",
+  "createdAt": {
+    "$date": "1970-01-01T00:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "1970-01-01T00:00:00.000Z"
+  },
+  "__v": 0
+}]
