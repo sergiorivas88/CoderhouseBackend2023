@@ -2,13 +2,14 @@ import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as GithubStrategy } from "passport-github2";
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
-import { Exception } from "../utils/utils.js";
+
 import config from "./envConfig.js";
 import usersController from "../controller/users.controller.js";
 import UserDTO from "../dao/DTOs/user.DTO.js";
 import { createError } from "../utils/createError.js";
 import errorList from "../utils/errorList.js";
 import { generatorUserLoginError } from "../utils/errorCause.js";
+
 const optsUser = {
   usernameField: "email",
   passReqToCallback: true,
@@ -47,13 +48,14 @@ export const init = () => {
           createError.Error({
             name: "Register error",
             cause: error,
-            message: "An error occured within the register method",
+            message: "An error occurred within the register method",
             code: errorList.INTERNAL_SERVER_ERROR,
           })
         );
       }
     })
   );
+
   passport.use(
     "login",
     new LocalStrategy(optsUser, async (req, email, password, done) => {
@@ -160,11 +162,11 @@ export const init = () => {
       const adminUser = {
         _id: "admin",
         cart: 1,
-        firstName: "Admin",
-        lastName: "Coder",
+        firstName: "Sergio",
+        lastName: "Rivas",
         rol: "Admin",
-        age: "AdminAge",
-        email: "adminCoder@coder.com",
+        age: "35",
+        email: "sergio.rivas88@gmail.com",
       };
       return done(null, adminUser);
     }
@@ -176,6 +178,7 @@ export const init = () => {
       done(error, null);
     }
   });
+
   passport.use(
     "currentGeneral",
     new JwtStrategy(optsJWT, (payload, done) => {
@@ -183,6 +186,7 @@ export const init = () => {
       return done(null, userDTO);
     })
   );
+
   passport.use(
     "currentProfile",
     new JwtStrategy(optsJWT, (payload, done) => {
