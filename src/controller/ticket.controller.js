@@ -7,7 +7,7 @@ import config from "../config/envConfig.js";
 import { createError } from '../utils/createError.js';
 import errorList from '../utils/errorList.js';
 export default class {
-    static async createTicket(cid, userEmail) {
+    static async createTicket(req, cid, userEmail) {
         try {
 
             const cartData = await cartsController.getCartContentById(cid);
@@ -38,16 +38,16 @@ export default class {
                 await cartsController.deleteProductOfCart(cid, productId);
             } else {
                 if (existingProduct.status === false) {
-                    console.log(`You cannot purchase the item ${productId} because it is not available.`);
+                    req.logger.warning(`You cannot purchase the item ${productId} because it is not available.`);
                 } else {
-                    console.log(`There is not enough stock of the product ${productId}.`);
+                    req.logger.warning(`There is not enough stock of the product ${productId}.`);
                 }
             }
         }
         
         const uniqueCode = nanoid();
         const date = new Date();
-        const ticket = await ticketService.createTicket(uniqueCode, date, amount, userEmail, purchasedProductsData);
+        const ticket = await ticketService.createTicket(req, uniqueCode, date, amount, userEmail, purchasedProductsData);
         
         if(ticket){
             const mailOptions = {
@@ -75,7 +75,7 @@ export default class {
             };
             const info = await transporter.sendMail(mailOptions);
 
-            console.log('Correo enviado: ' + info.response);
+            req.logger.info('Correo enviado: ' + info.response);
             return ticket;
         } else {
             return

@@ -14,4 +14,5 @@ export default (error, req, res, next) => {
             res.status(500).json({ status: 'error', message: 'Error desconocido' });
             break;
     }
+    req.logger.fatal(error, error.code)
 }

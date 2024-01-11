@@ -20,7 +20,7 @@ router.post("/carts", async (req, res) => {
             res.status(404).send("Cart not created.");
         }
     } catch (error) {
-        console.error("Error adding cart:", error);
+        req.logger.error("Error adding cart:", error)
         res.status(500).send("Error adding cart.");
     }
 });
@@ -35,7 +35,7 @@ router.get("/carts/:cid", authenticateLevel(3), async (req, res) => {
             res.status(404).send({ message: "There is no cart by that id" });
         }
     } catch (error) {
-        console.error("Error finding cart:", error);
+        req.logger.error("Error finding cart:", error)
         res.status(500).send("Error finding cart.");
     }
 })
@@ -63,11 +63,11 @@ router.post("/carts/:cid/product/:pid", authenticateLevel(3), async (req, res) =
                 res.status(400).send({ message: "Error adding the product to the cart" });
             }
         } else {
-            console.log("Product not found");
+            req.logger.error("Product not found")
             res.status(404).send({ message: "Product not found" });
         }
     } catch (error) {
-        console.error("Error updating the cart or adding the product:", error);
+        req.logger.error("Error updating the cart or adding the product:", error);
         res.status(500).send("Error updating the cart or adding the product");
     }
 });
@@ -77,10 +77,10 @@ router.delete("/carts/:cid/product/:pid", authenticateLevel(3), async (req, res)
     const idProduct = req.params.pid;
 
     try {
-        await cartsController.deleteProductOfCart(idCart, idProduct)
+        await cartsController.deleteProductOfCart(req, idCart, idProduct)
         return res.status(200).send({ message: "Products deleted" });
     } catch (error) {
-        console.error("Error updating the cart or deleting the products:", error);
+        req.logger.error("Error updating the cart or deleting the products:", error);
         res.status(500).send("Error updating the cart or deleting the products");
     }
 });
@@ -90,7 +90,7 @@ router.put("/carts/:cid", authenticateLevel(3), async (req, res) => {
     const products = req.body;
 
     try {
-        const updatedCart = await cartsController.updateProductsArrayOfCart(idCart, products);
+        const updatedCart = await cartsController.updateProductsArrayOfCart(req, idCart, products);
 
         if (updatedCart) {
             res.status(200).send({ message: "Products in the cart updated", cart: updatedCart });
@@ -98,7 +98,7 @@ router.put("/carts/:cid", authenticateLevel(3), async (req, res) => {
             res.status(400).send({ message: "Error updating the products in the cart" });
         }
     } catch (error) {
-        console.error("Error updating the cart or the products:", error);
+        req.logger.error("Error updating the cart or the products:", error);
         res.status(500).send("Error updating the cart or the products");
     }
 })
@@ -117,7 +117,7 @@ router.put("/carts/:cid/product/:pid", authenticateLevel(3), async (req, res) =>
             res.status(400).send({ message: "Error updating the product quantity in the cart" });
         }
     } catch (error) {
-        console.error("Error updating the cart or the product quantity:", error);
+        req.logger.error("Error updating the cart or the product quantity:", error);
         res.status(500).send("Error updating the cart or the product quantity");
     }
 })
@@ -125,7 +125,7 @@ router.put("/carts/:cid/product/:pid", authenticateLevel(3), async (req, res) =>
 router.delete("/carts/:cid", authenticateLevel(3), async (req, res) => {
     const idCart = req.params.cid;
     try {
-        const updatedCart = await cartsController.deleteProductsOfCart(idCart);
+        const updatedCart = await cartsController.deleteProductsOfCart(req, idCart);
 
         if (updatedCart) {
             res.status(200).send({ message: "All products deleted from the cart", cart: updatedCart });
@@ -133,13 +133,13 @@ router.delete("/carts/:cid", authenticateLevel(3), async (req, res) => {
             res.status(400).send({ message: "Error deleting the products from the cart" });
         }
     } catch (error) {
-        console.error("Error updating the cart or deleting the products:", error);
+        req.logger.error("Error updating the cart or deleting the products:", error);
         res.status(500).send("Error updating the cart or deleting the products");
     }
 })
 router.get("/carts", authenticateLevel(2), async (req, res) => {
     try {
-        const carts = await cartsController.getCarts();
+        const carts = await cartsController.getCarts(req);
         for (let i = 0; i < carts.length; i++) {
             const element = carts[i];
             element.title = i;
@@ -151,7 +151,7 @@ router.get("/carts", authenticateLevel(2), async (req, res) => {
         }
     }
     catch (error) {
-        console.error("Error getting carts:", error);
+        req.logger.error("Error getting carts:", error);
         res.status(500).send("Error getting carts");
     }
 })
@@ -159,7 +159,7 @@ router.get("/carts", authenticateLevel(2), async (req, res) => {
 router.post("/carts/:cid/purchase", async (req, res) => {
     const idCart = req.params.cid;
     try {
-        const ticket = await ticketController.createTicket(idCart, req.user.email)
+        const ticket = await ticketController.createTicket(req, idCart, req.user.email)
         if (ticket) {
             res.render('ticket', {ticket})
         } else {
@@ -167,7 +167,7 @@ router.post("/carts/:cid/purchase", async (req, res) => {
         }
     }
     catch (error) {
-        console.error("Error purchasing:", error);
+        req.logger.error("Error purchasing:", error);
         res.status(500).send("Error completing the purchase");
     }
 })

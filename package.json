@@ -1,15 +1,15 @@
 {
-  "name": "proyectofinal-sergiorivas",
+  "name": "proyectofinal",
   "version": "1.0.0",
   "description": "",
   "main": "src/server.js",
   "type": "module",
   "scripts": {
     "start": "node .",
-    "dev": "nodemon ."
+    "dev": "nodemon --exec node -r dotenv/config ."
   },
   "keywords": [],
-  "author": "Sergio Rivas Osano",
+  "author": "",
   "license": "MIT",
   "dependencies": {
     "bcrypt": "^5.1.1",
@@ -24,17 +24,18 @@
     "mongoose-paginate-v2": "^1.7.4",
     "nanoid": "^5.0.4",
     "nodemailer": "^6.9.7",
-    "nodemon": "^3.0.1",
     "passport": "^0.7.0",
     "passport-github2": "^0.1.12",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "session-file-store": "^1.5.0",
     "socket.io": "^4.7.2",
-    "socket.io-client": "^4.7.2"
+    "socket.io-client": "^4.7.2",
+    "winston": "^3.11.0"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.3.1",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "nodemon": "^3.0.2"
   }
 }

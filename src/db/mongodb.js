@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import config from '../config/envConfig.js'
 
 export const init = async () => {
+    
     try {
         await mongoose.connect(config.db.URI);
         console.log('Database conected');

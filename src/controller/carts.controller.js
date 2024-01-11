@@ -38,7 +38,7 @@ export default class {
             });
         }
     }
-    static async deleteProductOfCart(cid, pid) {
+    static async deleteProductOfCart(req, cid, pid) {
         try {
             const cart = await isCart(cid);
     
@@ -62,7 +62,7 @@ export default class {
                 throw new Exception("Invalid cart or cart products", 500);
             }
         } catch (error) {
-            console.error("Error deleting product from cart:", error);
+            req.logger.error("Error deleting product from cart:", error);
             throw new Exception("Error deleting product from cart", 500);
         }
     }
@@ -71,7 +71,7 @@ export default class {
     
     
     
-    static async updateProductsArrayOfCart(cid, products) {
+    static async updateProductsArrayOfCart(req, cid, products) {
         const cart = await isCart(cid);
     
         if (cart) {
@@ -91,7 +91,7 @@ export default class {
     
                 return updatedCart;
             } catch (error) {
-                console.error("Error updating cart:", error);
+                req.logger.error("Error updating cart:", error);
                 throw new Exception("Error updating cart", 500);
             }
         }
@@ -119,7 +119,7 @@ export default class {
         }
     }
         
-    static async deleteProductsOfCart(cid) {
+    static async deleteProductsOfCart(req, cid) {
         const cart = await isCart(cid); 
     
         if (cart) {
@@ -129,18 +129,18 @@ export default class {
                 await cart.save();
                 return cart; 
             } catch (error) {
-                console.error("Error deleting products from the cart:", error);
+                req.logger.error("Error deleting products from the cart:", error);
                 throw new Exception("Error deleting products from the cart", 500);
             }
         }
     }
-    static async getCarts() {
+    static async getCarts(req) {
         try {
             const carts = await cartsService.find();
             return carts;
         }
         catch (error) {
-            console.error("Error getting carts:", error);
+            req.logger.error("Error getting carts:", error);
             throw new Exception("Error getting carts", 500);
         }
 
