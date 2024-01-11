@@ -9,7 +9,7 @@
     "dev": "nodemon --exec node -r dotenv/config ."
   },
   "keywords": [],
-  "author": "",
+  "author": "Sergio Rivas Osano 2023",
   "license": "MIT",
   "dependencies": {
     "bcrypt": "^5.1.1",
