@@ -17,6 +17,10 @@ const userSchema = new mongoose.Schema({
         },
     provider: { type: String, default: "app" },
     githubId: { type: String, unique: true, sparse: true, default: undefined },
+    resetLink: {
+        token: { type: String, default: null },
+        date: { type: Date, default: null },
+    }
 }, { timestamps: true });
 
 userSchema.pre('findOne', function() {

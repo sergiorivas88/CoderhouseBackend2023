@@ -9,7 +9,7 @@
     "dev": "nodemon --exec node -r dotenv/config ."
   },
   "keywords": [],
-  "author": "Sergio Rivas Osano 2023",
+  "author": "",
   "license": "MIT",
   "dependencies": {
     "bcrypt": "^5.1.1",
@@ -31,6 +31,7 @@
     "session-file-store": "^1.5.0",
     "socket.io": "^4.7.2",
     "socket.io-client": "^4.7.2",
+    "uuid": "^9.0.1",
     "winston": "^3.11.0"
   },
   "devDependencies": {

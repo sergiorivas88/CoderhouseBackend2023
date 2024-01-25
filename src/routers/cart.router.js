@@ -44,9 +44,12 @@ router.get("/carts/:cid", authenticateLevel(3), async (req, res) => {
 router.post("/carts/:cid/product/:pid", authenticateLevel(3), async (req, res) => {
     const idCart = req.params.cid;
     const idProduct = req.params.pid;
+    const owner = req.user.email
     try {
         const product = await productsController.getProductById(idProduct);
-
+        if(product.owner === owner){
+            return res.status(403).send('You can\'t add your own product to the shopping cart')
+        }
         if (product) {
             const productsObj = {
                 productId: idProduct,

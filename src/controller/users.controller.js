@@ -78,12 +78,16 @@ export default class {
                 const newUser = await usersService.findOneByEmail(email)    
                 return newUser;
             } else if (dataToUpdate === "password") {
-                const saltRounds = 10;
-                data = await bcrypt.hash(data, saltRounds);
-                user.password = data;
-                await user.save();
-                const newUser = await usersService.findOneDataEmail(user)    
-                return newUser;
+                const passwordMatch = await bcrypt.compare(data, user.password);
+                if(passwordMatch){
+                    return false
+                } else {
+                    const saltRounds = 10;
+                    data = await bcrypt.hash(data, saltRounds);
+                    user.password = data;
+                    await user.save(); 
+                    return true;
+                }
             }
         } catch (error) {
             console.error("Error updating data:", error);
@@ -102,5 +106,30 @@ export default class {
     }
     static async findById(id){
         return await usersService.findById(id)
+    }
+    static async generateLink(email, token){
+        const date = Date()
+        const user = await usersService.findOneByEmail(email)
+        user.resetLink.token = token
+        user.resetLink.date = date
+        user.save()
+        const newUser = await usersService.findOneByEmail(email)   
+        return newUser;
+    }
+    static async changeRol(uid) {
+        const user = await usersService.findById(uid)
+        if(user.role === "user"){
+            user.role = "premium"
+            user.save()
+            const newUser = await usersService.findById(uid)
+            return newUser
+        } else if(user.role === "premium") {
+            user.role = "user"
+            user.save()
+            const newUser = await usersService.findById(uid)
+            return newUser
+        } else {
+            return null
+        }   
     }
 }

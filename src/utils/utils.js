@@ -52,10 +52,16 @@ export function authenticateLevel(level) {
                     res.status(401).send({ message: 'You are not authorised to perform this action'});
                 }
             } else if (level === 3) {
-                if(req.user.role === "user") {
+                if(req.user.role === "user" || req.user.role === "premium") {
                     next()
                 } else {
                     res.status(405).send({ message: 'User level required'});
+                }
+            } else if (level === 4){
+                if(req.user.role === "admin" || req.user.role === "premium") {
+                    next()
+                } else {
+                    res.status(405).send({ message: 'Admin or premium level required'});
                 }
             }
         }

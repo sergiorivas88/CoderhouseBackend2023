@@ -55,11 +55,17 @@ export default class {
         return updatedProduct;
     }
     
-    static async deletePoduct(pid){
+    static async deletePoduct(pid, owner){
         const product = await productsService.findById(pid);
         if(!product){
             throw new Exception("There is no product by that id", 404);
         }
-        return await productsService.deleteOne(product);
+        if(product.owner === owner){
+            return await productsService.deleteOne(product);
+        } else if(owner === "admin"){
+            return await productsService.deleteOne(product);
+        } else {
+            return 
+        }
     }
 }

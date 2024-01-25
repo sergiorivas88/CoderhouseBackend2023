@@ -2,6 +2,9 @@ import { Router } from 'express';
 import passport from 'passport';
 import usersController from '../controller/users.controller.js';
 import { tokenGenerator} from '../utils/utils.js';
+import { v4 as uuidv4 } from 'uuid';
+import config from '../config/envConfig.js'
+import { transporter } from "../app.js";
 
 const router = Router();
 
@@ -65,11 +68,50 @@ router.get('/sessions/logout', (req, res) => {
 });
 router.post('/sessions/changePassword', async (req, res) => {
     try {
-        const { body:{ email, password } } = req;
-        const exist = await usersController.findEmail(email);
+        const { body:{ email } } = req;
+        const user = await usersController.findEmail(email);
+        if (user){
+            const finalToken = uuidv4()
+            await usersController.generateLink(email, finalToken);
+            const url = config.url
+            const mailOptions = {
+                from: config.nodemailer.email,
+                to: email,
+                subject: 'Reset your password',
+                text: `Hi from the apples shop!
+                
+                Are you wanting to change your password?
+                Click on this link below and follow the instructions:
+                ${url}/resetPassword/${user._id}/${finalToken}
+                If you did not request a new password please ignore this message.
+                `
+            };
+            const mail = await transporter.sendMail(mailOptions); 
+            if(mail){            
+                res.render('waiting')
+            } else {
+                console.error(`Error sending reset password email to ${user.email}`);
+            } 
+        } else {
+            res.redirect('/changePassword');
+        }
+    }
+    catch (error) {
+        req.logger.error(error)
+        res.redirect('/changePassword');
+    }
+})
+router.post('/sessions/trueChangePassword', async (req, res) => {
+    try {
+        const { body:{ uid, password } } = req;
+        const exist = await usersController.findById(uid);
         if (exist){
-            await usersController.updateData("password", password, exist._id);
-            res.redirect('/login')
+            const updated = await usersController.updateData("password", password, exist._id);
+            if(updated){
+                res.redirect('/login')
+            } else {
+                res.status(401).send("You can not use the same password")
+            }
         } else {
             res.redirect('/changePassword');
         }

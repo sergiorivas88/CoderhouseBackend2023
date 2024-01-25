@@ -1,1 +1,29 @@
 {"level":"error","message":"Error Test"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"cause":"Some params are missing,\n  The following params are required and this is the data tha was received:\n    - title - string: ManzanaPodrida as string\n    - description - string: Verde as string\n    - price - number: 10000 as number\n    - code - string: space1234456 as string\n    - stock - number: 14 as number\n    - category - string: Podrida as string\n  ","code":4,"level":"error","message":"Error adding products: An error occured within the addProduct method","name":"Invalid params error","stack":"Invalid params error: An error occured within the addProduct method\n    at createError.Error (file:///D:/coderhouse/Backend/ProyectoFinal/src/utils/createError.js:3:23)\n    at default.addProduct (file:///D:/coderhouse/Backend/ProyectoFinal/src/controller/products.controller.js:17:25)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async file:///D:/coderhouse/Backend/ProyectoFinal/src/routers/products.router.js:82:21"}
+{"code":"ERR_HTTP_HEADERS_SENT","level":"error","message":"Error fetching products: Cannot set headers after they are sent to the client","stack":"Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client\n    at new NodeError (node:internal/errors:399:5)\n    at ServerResponse.setHeader (node:_http_outgoing:645:11)\n    at ServerResponse.header (D:\\coderhouse\\Backend\\ProyectoFinal\\node_modules\\express\\lib\\response.js:794:10)\n    at ServerResponse.send (D:\\coderhouse\\Backend\\ProyectoFinal\\node_modules\\express\\lib\\response.js:174:12)\n    at ServerResponse.json (D:\\coderhouse\\Backend\\ProyectoFinal\\node_modules\\express\\lib\\response.js:278:15)\n    at ServerResponse.send (D:\\coderhouse\\Backend\\ProyectoFinal\\node_modules\\express\\lib\\response.js:162:21)\n    at file:///D:/coderhouse/Backend/ProyectoFinal/src/routers/products.router.js:125:29\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"}

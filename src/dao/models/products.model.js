@@ -10,6 +10,7 @@ const productsSchema = new mongoose.Schema({
     stock: { type: Number, required: true},
     status: { type: Boolean, default:'active'},
     category: { type: String, required: true},
+    owner: {type: String, default: "admin"}
 }, {    timestamps: true })
 productsSchema.plugin(mongoosePaginate);
 export default mongoose.model('Products', productsSchema);
