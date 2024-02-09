@@ -5,6 +5,7 @@ export default {
     port: process.env.PORT,
     db: {
         URI: process.env.URI,
+        URI_DEV: process.env.URIDEV
     },
     jwtSecret: process.env.JWT_SECRET,
     cookieSecret: process.env.COOKIE_SECRET,

@@ -24,6 +24,24 @@ router.post("/carts", async (req, res) => {
         res.status(500).send("Error adding cart.");
     }
 });
+router.get("/carts", authenticateLevel(2), async (req, res) => {
+    try {
+        const carts = await cartsController.getCarts(req);
+        for (let i = 0; i < carts.length; i++) {
+            const element = carts[i];
+            element.title = i;
+        }
+        if (carts) {
+            res.render('cartsList', { carts });
+        } else {
+            res.status(400).send({ message: "No carts found" })
+        }
+    }
+    catch (error) {
+        req.logger.error("Error getting carts:", error);
+        res.status(500).send("Error getting carts");
+    }
+})
 
 router.get("/carts/:cid", authenticateLevel(3), async (req, res) => {
     const id = req.params.cid;
@@ -40,6 +58,38 @@ router.get("/carts/:cid", authenticateLevel(3), async (req, res) => {
     }
 })
 
+router.put("/carts/:cid", authenticateLevel(3), async (req, res) => {
+    const idCart = req.params.cid;
+    const products = req.body;
+    
+    try {
+        const updatedCart = await cartsController.updateProductsArrayOfCart(req, idCart, products);
+
+        if (updatedCart) {
+            res.status(200).send({ message: "Products in the cart updated", cart: updatedCart });
+        } else {
+            res.status(400).send({ message: "Error updating the products in the cart" });
+        }
+    } catch (error) {
+        req.logger.error("Error updating the cart or the products:", error);
+        res.status(500).send("Error updating the cart or the products");
+    }
+})
+router.delete("/carts/:cid", authenticateLevel(3), async (req, res) => {
+    const idCart = req.params.cid;
+    try {
+        const updatedCart = await cartsController.deleteProductsOfCart(req, idCart);
+
+        if (updatedCart) {
+            res.status(200).send({ message: "All products deleted from the cart", cart: updatedCart });
+        } else {
+            res.status(400).send({ message: "Error deleting the products from the cart" });
+        }
+    } catch (error) {
+        req.logger.error("Error updating the cart or deleting the products:", error);
+        res.status(500).send("Error updating the cart or deleting the products");
+    }
+})
 
 router.post("/carts/:cid/product/:pid", authenticateLevel(3), async (req, res) => {
     const idCart = req.params.cid;
@@ -88,23 +138,6 @@ router.delete("/carts/:cid/product/:pid", authenticateLevel(3), async (req, res)
     }
 });
 
-router.put("/carts/:cid", authenticateLevel(3), async (req, res) => {
-    const idCart = req.params.cid;
-    const products = req.body;
-
-    try {
-        const updatedCart = await cartsController.updateProductsArrayOfCart(req, idCart, products);
-
-        if (updatedCart) {
-            res.status(200).send({ message: "Products in the cart updated", cart: updatedCart });
-        } else {
-            res.status(400).send({ message: "Error updating the products in the cart" });
-        }
-    } catch (error) {
-        req.logger.error("Error updating the cart or the products:", error);
-        res.status(500).send("Error updating the cart or the products");
-    }
-})
 
 router.put("/carts/:cid/product/:pid", authenticateLevel(3), async (req, res) => {
     const idCart = req.params.cid;
@@ -125,39 +158,6 @@ router.put("/carts/:cid/product/:pid", authenticateLevel(3), async (req, res) =>
     }
 })
 
-router.delete("/carts/:cid", authenticateLevel(3), async (req, res) => {
-    const idCart = req.params.cid;
-    try {
-        const updatedCart = await cartsController.deleteProductsOfCart(req, idCart);
-
-        if (updatedCart) {
-            res.status(200).send({ message: "All products deleted from the cart", cart: updatedCart });
-        } else {
-            res.status(400).send({ message: "Error deleting the products from the cart" });
-        }
-    } catch (error) {
-        req.logger.error("Error updating the cart or deleting the products:", error);
-        res.status(500).send("Error updating the cart or deleting the products");
-    }
-})
-router.get("/carts", authenticateLevel(2), async (req, res) => {
-    try {
-        const carts = await cartsController.getCarts(req);
-        for (let i = 0; i < carts.length; i++) {
-            const element = carts[i];
-            element.title = i;
-        }
-        if (carts) {
-            res.render('cartsList', { carts });
-        } else {
-            res.status(400).send({ message: "No carts found" })
-        }
-    }
-    catch (error) {
-        req.logger.error("Error getting carts:", error);
-        res.status(500).send("Error getting carts");
-    }
-})
 
 router.post("/carts/:cid/purchase", async (req, res) => {
     const idCart = req.params.cid;

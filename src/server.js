@@ -35,4 +35,3 @@ await init();
 server.listen(PORT, () => {
     console.log(`Server running into http://localhost:${PORT}`);
 });
-

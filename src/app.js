@@ -15,15 +15,23 @@ import cors from 'cors';
 import nodemailer from 'nodemailer'
 import errorHandler from "./middlewares/errorHandler.js";
 import { addLogger } from "./config/logger.js";
+import swaggerJsDoc from "swagger-jsdoc";
+import swaggerUiExpress from 'swagger-ui-express'
 
 const app = express();
+let mongo= ""
+if(config.env === "dev"){
+    mongo = config.db.URI_DEV
+} else {
+    mongo = config.db.URI;
+}
 app.use(cookieParser(config.cookieSecret));
 app.use(expressSession({
     secret: config.sessionSecret,
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
-        mongoUrl: config.db.URI,
+        mongoUrl: mongo,
         mongoOptions: {},
         ttl: 120,
     }), 
@@ -41,6 +49,20 @@ app.use(addLogger);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '../../public')));
+
+const options = {
+    definition: {
+        openapi: '3.0.1',
+        info: {
+            title: 'E-commerce API',
+            description: 'API for the apple shop',
+        },
+    },
+    apis: [`src/docs/**/*.yaml`],
+};
+const specs = swaggerJsDoc(options);
+app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
+
 
 const hbs = exphbs.create({
     runtimeOptions: {

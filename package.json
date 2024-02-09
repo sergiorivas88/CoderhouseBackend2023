@@ -1,10 +1,11 @@
 {
   "name": "proyectofinal",
   "version": "1.0.0",
-  "description": "Proyecto Final Sergio Rivas",
+  "description": "",
   "main": "src/server.js",
   "type": "module",
   "scripts": {
+    "test": "mocha --timeout 5000",
     "start": "node .",
     "dev": "nodemon --exec node -r dotenv/config ."
   },
@@ -31,12 +32,17 @@
     "session-file-store": "^1.5.0",
     "socket.io": "^4.7.2",
     "socket.io-client": "^4.7.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
     "uuid": "^9.0.1",
     "winston": "^3.11.0"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.3.1",
+    "chai": "^5.0.3",
     "dotenv": "^16.3.1",
-    "nodemon": "^3.0.2"
+    "mocha": "^10.2.0",
+    "nodemon": "^3.0.2",
+    "supertest": "^6.3.4"
   }
 }
