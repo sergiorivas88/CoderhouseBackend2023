@@ -20,7 +20,15 @@ const userSchema = new mongoose.Schema({
     resetLink: {
         token: { type: String, default: null },
         date: { type: Date, default: null },
-    }
+    },
+    documents: [
+        {
+            name: { type: String },
+            reference: { type: String },
+            uploadType: { type: String}
+        }
+    ],
+    lastConnection:  { type: Date },
 }, { timestamps: true });
 
 userSchema.pre('findOne', function() {

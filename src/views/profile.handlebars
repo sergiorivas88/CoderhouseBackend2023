@@ -2,13 +2,36 @@
     <header>
         <h1>Private Zone</h1>
     </header>
+    {{#if user.role}}
+        {{#if (eq user.role "premium")}}
+            <div class="imageContainer">
+                <div class="profile-photo-container">
+                    <img src="{{profilePhoto}}" alt="">
+                </div>
+                
+            </div>
+        {{else}}
+            <p>Be premium if you want to show your profile photo</p>
+        {{/if}}
+    {{/if}}
+
     <p><strong>Name: </strong>{{user.firstName}}</p>
     <p><strong>Lastname: </strong> {{user.lastName}}</p>
     <p><strong>Email: </strong> {{user.email}}</p>
     <p><strong>Age: </strong> {{user.age}}</p>
     <p><strong>Role: </strong> {{user.role}}</p>
+    <h2>Uploaded Files:</h2>
+    <ul>
+        {{#each documents}}
+            <h3>{{this.uploadType}}</h3>
+            <img src="{{this.reference}}" alt="{{this.name}}" style="max-width: 200px; max-height: 200px;">
+        {{/each}}
+
+    </ul>
     <a href="/api/carts/{{user.cart}}"><button  class="button">My cart</button></a>
     <footer>
         <a href="/auth/sessions/logout" role="button" class="button">Logout</a>
     </footer>
 </article>
+
+

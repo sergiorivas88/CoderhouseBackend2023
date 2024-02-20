@@ -19,8 +19,14 @@ router.get("/", (req, res) => {
     res.redirect('/login');
 })
 
-router.get('/profile', passport.authenticate('currentProfile', { session: false }), (req, res) => {
-    res.render('profile', { title: "Profile", user: req.user});
+router.get('/profile', passport.authenticate('currentProfile', { session: false }), async (req, res) => {
+    const id = req.user._id
+    const user = await usersController.findById(id)
+    const documents = user.documents
+    const existingProfilePhoto = user.documents.findIndex(doc => doc.uploadType === "profilePhoto")
+    const profilePhoto = user.documents[existingProfilePhoto]
+    const profilePhotoLink = profilePhoto.reference
+    res.render('profile', { title: "Profile", user: req.user, documents: documents, profilePhoto:profilePhotoLink });
 });
 
 router.get('/login', (req, res) => {

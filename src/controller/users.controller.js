@@ -132,4 +132,45 @@ export default class {
             return null
         }   
     }
+    static async lastConnection(uid, date) {
+        const user = await usersService.findById(uid)
+        if(user) {
+            user.lastConnection = date
+            user.save()
+            return true
+        } else {
+            return false
+        }
+    }
+    static async uploadFile(uid, filename, link, uploadType) {
+        const user = await usersService.findById(uid);
+        if (user) {
+            if (uploadType === "productPhoto") {
+                const document = {
+                    name: filename,
+                    reference: link,
+                    uploadType: uploadType
+                };
+                user.documents.push(document);
+            } else {
+                const existingDocumentIndex = user.documents.findIndex(doc => doc.uploadType === uploadType);
+                if (existingDocumentIndex !== -1) {
+                    user.documents[existingDocumentIndex].name = filename;
+                    user.documents[existingDocumentIndex].reference = link;
+                } else {
+                    const document = {
+                        name: filename,
+                        reference: link,
+                        uploadType: uploadType
+                    };
+                    user.documents.push(document);
+                }
+            }
+            await user.save();
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
 }

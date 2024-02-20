@@ -18,7 +18,8 @@ export const tokenGenerator = (user) => {
         age,
         email,
         role,
-        cart
+        cart,
+        documents
     } = user;    
     const payload = {
         _id,
@@ -28,9 +29,11 @@ export const tokenGenerator = (user) => {
         age,
         role,
         cart,
+        documents
     };
     return JWT.sign(payload, config.jwtSecret, { expiresIn: '30m' });
 }
+
 
 
 export class Exception extends Error {
