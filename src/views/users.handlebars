@@ -1,9 +1,6 @@
+
 <div>
-    <h2>Welcome to the ecommerce {{user.lastName}} {{user.firstName}}!</h2>
-    <h3>Mail: {{user.email}}, Age: {{user.age}}, Role: {{user.role}}</h3>
-</div>
-<div>
-    <h2>Product List</h2>
+    <h2>Users List</h2>
     <div class="miniBar">
         <div class="buttonGroup">
             <button onclick="sortBy('asc')" class="miniBarButton">Asc</button>
@@ -13,25 +10,27 @@
             <input type="number" id="limit" value="10">
         </div>
         <div>
-            <input type="text" id="search" placeholder="Enter title">
+            <input type="text" id="search" placeholder="Enter firstName">
             <button onclick="search()" class="miniBarButton">Search</button>
         </div>
         <div>
-            <input type="text" id="category" placeholder="Enter category">
-            <button onclick="filterByCategory()" class="miniBarButton">Filter</button>
+            <input type="text" id="role" placeholder="Enter role">
+            <button onclick="filterByRole()" class="miniBarButton">Filter</button>
         </div>
         <div>
-            <input type="text" id="status" placeholder="Enter status">
-            <button onclick="filterByStatus()" class="miniBarButton">Filter</button>
+            <input type="text" id="provider" placeholder="Enter provider">
+            <button onclick="filterByProvider()" class="miniBarButton">Filter</button>
         </div>
     </div>
     <ul>
-        {{#each products}}
+        {{#each users}}
         <li>
-            <a href="/api/products/{{_id}}"><h4>{{title}}</h4></a>
-            <form action="/api/carts/{{../user.cart}}/product/{{_id}}" method="POST">
-                <button type="submit" class="button">Add to cart</button>
-            </form>
+            <p><b>Name:</b> {{firstName}} {{lastName}}<br/>
+            <b>Email:</b> {{email}}<br/>
+            <b>Role:</b> {{role}}<br/>
+            <b>Provider:</b> {{provider}}<br/>
+            <b>Last Connection:</b> {{lastConnection}}<br/>
+
         </li>
         {{/each}}
     </ul>
@@ -51,7 +50,7 @@
 
 
 <script>
-    const currentUrl = "http://localhost:8080/api/products";
+    const currentUrl = "http://localhost:8080/api/users";
 
     function sortBy(order) {
         const limit = document.getElementById('limit').value;
@@ -61,22 +60,22 @@
 
     function search() {
         const limit = document.getElementById('limit').value;
-        const title = document.getElementById('search').value;
-        const newURL = generatePaginatedLink(currentUrl, { title, limit });
+        const firstName = document.getElementById('search').value;
+        const newURL = generatePaginatedLink(currentUrl, { firstName, limit });
         window.location.href = newURL;
     }
 
-    function filterByCategory() {
+    function filterByRole() {
         const limit = document.getElementById('limit').value;
-        const category = document.getElementById('category').value;
-        const newURL = generatePaginatedLink(currentUrl, { category, limit });
+        const role = document.getElementById('role').value;
+        const newURL = generatePaginatedLink(currentUrl, { role, limit });
         window.location.href = newURL;
     }
 
-    function filterByStatus() {
+    function filterByProvider() {
         const limit = document.getElementById('limit').value;
-        const status = document.getElementById('status').value;
-        const newURL = generatePaginatedLink(currentUrl, { status, limit });
+        const provider = document.getElementById('provider').value;
+        const newURL = generatePaginatedLink(currentUrl, { provider, limit });
         window.location.href = newURL;
     }
 
@@ -91,4 +90,4 @@
     };
 </script>
 
-<link rel="stylesheet" href="../css/search.css">
+<link rel="stylesheet" href="../../css/search.css">

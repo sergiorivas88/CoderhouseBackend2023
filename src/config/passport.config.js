@@ -9,6 +9,7 @@ import UserDTO from '../dao/DTOs/user.DTO.js';
 import {createError} from '../utils/createError.js';
 import errorList from '../utils/errorList.js';
 import { generatorUserLoginError } from '../utils/errorCause.js';
+import cartsController from '../controller/carts.controller.js';
 const optsUser = {
     usernameField: 'email',
     passReqToCallback: true,
@@ -63,7 +64,9 @@ export const init = () => {
                     lastName: "Coder",
                     role: "admin",
                     age: "AdminAge",
-                    email: email
+                    email: email,
+                    documents: "",
+                    lastConnection: ""
                 }
                 done(null, user);
             } else {
@@ -100,7 +103,6 @@ export const init = () => {
                 if (userWithGithubId) {
                     return done(null, userWithGithubId);
                 }
-    
                 const data = {
                     firstName: profile._json.name,
                     lastName: '',
@@ -109,7 +111,9 @@ export const init = () => {
                     password: '',
                     provider: 'Github',
                     githubId: githubId, 
-                    cart: ''
+                    cart: "",
+                    document: '',
+                    lastConnection: ""
                 };
     
                 const newUser = await usersController.addGithubUser(data);
@@ -120,6 +124,7 @@ export const init = () => {
             if (user) {
                 return done(null, user);
             }
+            const userCart = await cartsController.addCart(email)
             const data = {
                 firstName: profile._json.name,
                 lastName: '',
@@ -127,6 +132,9 @@ export const init = () => {
                 age: '',
                 password: '',
                 provider: 'Github',
+                document: '',
+                lastConnection: "",
+                cart: userCart
             };
     
             const newUser = await usersController.addGithubUser(data);
@@ -150,9 +158,10 @@ export const init = () => {
                 cart: 1,
                 firstName: "Admin",
                 lastName: "Coder",
-                rol: "Admin",
+                role: "admin",
                 age: "AdminAge",
-                email: "adminCoder@coder.com"
+                email: "adminCoder@coder.com",
+                document: ''
             };
             return done(null, adminUser);
         }

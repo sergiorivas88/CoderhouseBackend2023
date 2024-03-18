@@ -1,7 +1,7 @@
 {
-  "name": "proyectofinal",
+  "name": "proyectofinalSergioRivas",
   "version": "1.0.0",
-  "description": "",
+  "description": "proyectofinalSergioRivas",
   "main": "src/server.js",
   "type": "module",
   "scripts": {
@@ -14,7 +14,6 @@
   "license": "MIT",
   "dependencies": {
     "bcrypt": "^5.1.1",
-    "busboy": "^1.6.0",
     "connect-mongo": "^5.1.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -22,11 +21,12 @@
     "express-handlebars": "^7.1.2",
     "express-session": "^1.17.3",
     "jsonwebtoken": "^9.0.2",
+    "method-override": "^3.0.0",
     "mongoose": "^7.6.3",
     "mongoose-paginate-v2": "^1.7.4",
-    "multer": "^1.4.5-lts.1",
+    "multer": "^1.4.3",
     "nanoid": "^5.0.4",
-    "nodemailer": "^6.9.9",
+    "nodemailer": "^6.9.7",
     "passport": "^0.7.0",
     "passport-github2": "^0.1.12",
     "passport-jwt": "^4.0.1",
@@ -40,9 +40,9 @@
     "winston": "^3.11.0"
   },
   "devDependencies": {
-    "@faker-js/faker": "^8.3.1",
+    "@faker-js/faker": "^8.4.1",
     "chai": "^5.0.3",
-    "dotenv": "^16.3.1",
+    "dotenv": "^16.4.5",
     "mocha": "^10.2.0",
     "nodemon": "^3.0.2",
     "supertest": "^6.3.4"

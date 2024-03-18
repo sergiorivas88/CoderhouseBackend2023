@@ -1,4 +1,5 @@
 import cartsModel from "./models/carts.model.js";
+import mongoose from "mongoose";
 export default class {
     static async create(userEmail) {
         return await cartsModel.create({ userEmail: userEmail, products: [] })
@@ -11,5 +12,8 @@ export default class {
     }
     static async find() {
         return await cartsModel.find()
+    }
+    static async remove(cid){
+        return await cartsModel.deleteOne({ objectId: cid });
     }
 }

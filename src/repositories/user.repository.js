@@ -20,4 +20,10 @@ export default class User {
     async findOneByGithubId(gitId) {
         return await this.dao.findOneByGithubId(gitId)
     }
+    async getUsers(){
+        return await this.dao.getUsers()
+    }
+    async deleteUser(uid){
+        return await this.dao.deleteUser(uid)
+    }
 }

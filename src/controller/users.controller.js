@@ -5,6 +5,8 @@ import cartsController from '../controller/carts.controller.js';
 import { createError } from "../utils/createError.js";
 import { generatorUserError } from "../utils/errorCause.js";
 import errorList from "../utils/errorList.js";
+import { transporter } from "../app.js";
+import config from "../config/envConfig.js";
 export default class {
     static async addUser(data) {
         try {
@@ -172,5 +174,56 @@ export default class {
             return false;
         }
     }
+    static async cleanUnconnectedUsers(date){
+        const allUsers = await usersService.getUsers();
+        const currentDate = new Date();
+        const twoDaysAgo = new Date(currentDate);
+        twoDaysAgo.setDate(currentDate.getDate() - 2);
+    
+        const unconnectedUsers = allUsers.filter(u => {
+            return new Date(u.lastConnection) < twoDaysAgo;
+        });
+    
+        for (const user of unconnectedUsers) {
+            const sended = await sendMail(user);
+            if (sended) {
+                await cartsController.deleteCart(user.cart)
+                await this.deleteUser(user._id);
+            } 
+            console.log("next");
+        }
+    
+        return 'cleaned';
+    }
+    
+    static async deleteUser(uid){
+        const user = await usersService.findById(uid);
+        await cartsController.deleteCart(user.cart); 
+        return await usersService.deleteUser(uid);
+    }
     
 }
+    async function sendMail(user) {
+        const mailOptions = {
+            from: config.nodemailer.email,
+            to: user.email,
+            subject: 'Your user on the apple shop was deleted',
+            text: `Hi from the apples shop!
+            
+            Your user was deleted because it was unconnected for more than two days, and admin has decided to clean it.
+            If you want  to continue using our services please create a new account by registering again on our shop.
+    
+            Hope to see you again!
+            Apple shop's CEO
+            `
+        };
+        try {
+            const info = await transporter.sendMail(mailOptions);
+            console.log(info);
+            return true;
+        } catch (error) {
+            console.error('Error sending email:', error);
+            return false;
+        }
+    }
+    

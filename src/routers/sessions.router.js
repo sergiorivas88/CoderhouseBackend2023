@@ -13,16 +13,24 @@ router.post('/sessions/register', passport.authenticate('register', { failureRed
 });
 
 router.post('/sessions/login', passport.authenticate('login', { failureRedirect: '/login' }), async (req, res) => {
+
     const token = tokenGenerator(req.user)
-    const date = Date()
-    const connection = await usersController.lastConnection(req.user._id, date)
-    if(connection){
+    if(req.user.role === "admin"){
         res
         .cookie('access_token', token, { maxAge: 1000*60*30, httpOnly: true, signed: true })
         .status(200)
         .redirect('/api/products');
     } else {
-        res.redirect('/login')
+        const date = Date()
+        const connection = await usersController.lastConnection(req.user._id, date)
+        if(connection){
+            res
+            .cookie('access_token', token, { maxAge: 1000*60*30, httpOnly: true, signed: true })
+            .status(200)
+            .redirect('/api/products');
+        } else {
+            res.redirect('/login')
+        }
     }
 });
 router.get('/sessions/current', passport.authenticate('current', { failureRedirect: '/login' }), async (req, res) => {
@@ -30,7 +38,7 @@ router.get('/sessions/current', passport.authenticate('current', { failureRedire
     res.json({ user: currentUser });
 });
 
-router.post('/sessions/login-github', passport.authenticate('current', { session: false }), async (req, res) => {
+router.post('/sessions/login-github', async (req, res) => {
     try {
         const { body:{ email } } = req;
         let user = req.user
@@ -67,15 +75,21 @@ router.get('/sessions/github-callback', passport.authenticate('github', { failur
         .redirect('/api/products'); 
     }
 })
-router.get('/sessions/logout', async (req, res) => {
-    const date = Date()
-    const connection = await usersController.lastConnection(req.user._id, date)
-    if(connection){
+router.get('/sessions/logout', passport.authenticate('currentProfile', { session: false }), async (req, res) => {
+    if(req.user.role === "admin"){
         res
         .clearCookie('access_token')
         .redirect('/login')
     } else {
-        res.redirect('/profile')
+        const date = Date()
+        const connection = await usersController.lastConnection(req.user._id, date)
+        if(connection){
+            res
+            .clearCookie('access_token')
+            .redirect('/login')
+        } else {
+            res.redirect('/profile')
+        }
     }
 
 });

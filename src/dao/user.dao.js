@@ -19,5 +19,10 @@ export default class {
     static async findOneByGithubId(gitId) {
         return await userModel.findOne({githubId : gitId})
     }
-    
+    static async getUsers(){
+        return await userModel.find()
+    }
+    static async deleteUser(uid){
+        return await userModel.deleteOne({_id : uid})
+    }
 }

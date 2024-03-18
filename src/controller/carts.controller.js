@@ -3,6 +3,7 @@ import { Exception } from "../utils/utils.js";
 import { createError } from '../utils/createError.js';
 import errorList from '../utils/errorList.js';
 import { generatorCartIdError } from "../utils/errorCause.js";
+import cartsModel from "../dao/models/carts.model.js";
 export default class {
     static async addCart(userEmail){ 
         return await cartsService.create(userEmail)
@@ -143,7 +144,10 @@ export default class {
             req.logger.error("Error getting carts:", error);
             throw new Exception("Error getting carts", 500);
         }
-
+    }
+    static async deleteCart(cid){
+        console.log(cid);
+        return await cartsService.remove(cid)
     }
 }
 

@@ -2,7 +2,8 @@ import { Router } from 'express';
 import productsController from '../controller/products.controller.js'
 import productsModel from '../dao/models/products.model.js';
 import { authenticateLevel } from '../utils/utils.js';
-
+import config from '../config/envConfig.js';
+import { transporter } from '../app.js';
 
 const router = Router();
 
@@ -139,12 +140,33 @@ router.delete("/products/:pid", authenticateLevel(4), async (req, res) => {
     }
     try {
         let deleted = await productsController.deletePoduct(id, owner)
+        let message
         if(deleted){
             deleted = true
+            const mailOptions = {
+                from: config.nodemailer.email,
+                to: owner,
+                subject: 'Your product was deleted',
+                text: `Hi from the apples shop!
+                
+                We are sorry to inform you that your product has been removed from our platform.
+                It may be that you removed it or an admin did
+                You always can post it again.
+
+                See you later!
+                `
+            };
+            const info = await transporter.sendMail(mailOptions);
+            console.log(info);
+            if(info){
+                message = "the email was sent after deleting a product."
+            } else {
+                message = "The email could not be send but the product was deleted successfully."
+            }
         } else {
             deleted = false
         }
-        res.status(200).send(`The product is deleted? : ${deleted} - You may not be the owner of this product or you may not have the permission to do so`);
+        res.status(200).send(`The product is deleted? : ${deleted}  \n ${message}`);
     }
     catch (error){
         req.logger.error("Error deleting products:", error)

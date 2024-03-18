@@ -20,14 +20,25 @@ router.get("/", (req, res) => {
 })
 
 router.get('/profile', passport.authenticate('currentProfile', { session: false }), async (req, res) => {
-    const id = req.user._id
-    const user = await usersController.findById(id)
-    const documents = user.documents
-    const existingProfilePhoto = user.documents.findIndex(doc => doc.uploadType === "profilePhoto")
-    const profilePhoto = user.documents[existingProfilePhoto]
-    const profilePhotoLink = profilePhoto.reference
-    res.render('profile', { title: "Profile", user: req.user, documents: documents, profilePhoto:profilePhotoLink });
+    if(req.user.role === "admin"){
+        res.render('profile', {title: "Profile", user: req.user})
+    } else {
+        const id = req.user._id
+        const user = await usersController.findById(id)
+        let documents = ""
+        let profilePhotoLink = ""
+        if(user && user.documents){
+            documents = user.documents
+            const existingProfilePhoto = user.documents.findIndex(doc => doc.uploadType === "profilePhoto")
+            if(existingProfilePhoto !== -1){ 
+                const profilePhoto = user.documents[existingProfilePhoto]
+                profilePhotoLink = profilePhoto.reference
+            }
+        }
+        res.render('profile', { title: "Profile", user: req.user, documents: documents, profilePhoto: profilePhotoLink });
+    }
 });
+
 
 router.get('/login', (req, res) => {
     res.render('login', {title: "Login"});

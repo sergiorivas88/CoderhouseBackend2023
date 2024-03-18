@@ -14,4 +14,7 @@ export default class Cart {
     async find() {
         return await this.dao.find()
     }
+    async remove(cid){
+        return await this.dao.remove()
+    }
 }

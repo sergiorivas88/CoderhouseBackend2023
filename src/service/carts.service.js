@@ -12,4 +12,7 @@ export default class {
     static async find() {
         return await cartRepository.find()
     }
+    static async remove(cid){
+        return await cartRepository.remove(cid)
+    }
 }

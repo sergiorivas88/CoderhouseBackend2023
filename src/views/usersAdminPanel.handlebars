@@ -1,0 +1,76 @@
+<div>
+    <h2>Users Admin Panel</h2>
+    <div>
+        <h3>! Delete users that were unconnected for more than two days</h3>
+        <form id="cleanUsersForm"  method="POST" action="/api/users/clean?_method=DELETE">
+            <button type="submit" class="button">Clean Unconnected Users</button>
+        </form>
+
+    </div>
+    <div class="miniBar">
+        <div>
+            <input type="text" id="search" placeholder="Enter id">
+            <button onclick="searchUser()" class="miniBarButton">Search</button>
+        </div>
+    </div>
+    <ul>
+        {{#each users}}
+        <li>
+            <p><b>_id:</b> {{_id}}<br/>
+            <b>Name:</b> {{firstName}} {{lastName}}<br/>
+            <b>Email:</b> {{email}}<br/>
+            <b>Age:</b> {{age}}<br/>
+            <b>Cart_id:</b> {{cart}}<br/>
+            <b>Created:</b> {{createdAt}}<br/>
+            <b>LastUpdated:</b> {{updatedAt}}<br/>
+            <b>Role:</b> {{role}}<br/>
+            <b>Provider:</b> {{provider}}<br/>
+            <b>Last Connection:</b> {{lastConnection}}<br/>
+            <form action="/api/users/{{_id}}/changeRoleByAdmin" method="POST">
+                <button type="submit" class="button">Change Role</button>
+            </form>
+            <form id="deleteForm" method="POST" action="/api/users/{{_id}}/deleteUser?_method=DELETE"  >
+
+                <button type="submit" class="button">Delete User</button>
+            </form>
+
+
+        </li>
+        {{/each}}
+    </ul>
+    {{#if totalPages}}
+    <div class="pagination">
+        {{#if prevLink}}
+        <a href="{{prevLink}}">Previous</a>
+        {{/if}}
+
+        {{#if nextLink}}
+        <a href="{{nextLink}}">Next</a>
+        {{/if}}
+    </div>
+    {{/if}}
+</div>
+
+<script>
+    const currentUrl = "http://localhost:8080/api/users/adminPanel";
+
+    function searchUser() {
+        const _id = document.getElementById('search').value;
+        const newURL = generatePaginatedLink(currentUrl, { _id });
+        window.location.href = newURL;
+    }
+
+    const generatePaginatedLink = (baseUrl, queryParams) => {
+        const url = new URL(baseUrl);
+
+        Object.keys(queryParams).forEach(key => {
+            url.searchParams.append(key, queryParams[key]);
+        });
+
+        return url.toString();
+    };
+
+
+</script>
+
+<link rel="stylesheet" href="../../css/search.css">

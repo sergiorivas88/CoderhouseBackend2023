@@ -1,9 +1,12 @@
 import { Router } from 'express';
 import usersController from '../controller/users.controller.js';
-import { tokenGenerator } from '../utils/utils.js';
+import { authenticateLevel, tokenGenerator } from '../utils/utils.js';
 import multer from 'multer';
 import { __dirname } from '../utils/utils.js';
 import path, {join} from 'path'
+import userModel from '../dao/models/user.model.js';
+import { request } from 'https';
+
 
 const router = Router();
 
@@ -87,5 +90,99 @@ router.get('/users/postDocuments', async (req, res) => {
     res.render('files', {title: "Uploading files", uid: uid})
 })
 
+router.get('/users', authenticateLevel(2), async (req, res) => {
+    const { limit, page, sort, firstName, role, provider } = req.query;
+
+    try {
+        const options = {
+            limit: limit ? parseInt(limit) : 10,
+            page: page ? parseInt(page) : 1,
+        };
+
+        const filter = {};
+
+        if (role) {
+            filter.role = role;
+        }
+        if (provider) {
+            filter.provider = provider;
+        }
+        if (firstName) {
+            filter.firstName = firstName;
+        }
+        if (sort === 'asc' || sort === 'desc') {
+            options.sort = { lastConnection: sort === 'asc' ? 1 : -1 };
+        }
+
+        const result = await userModel.paginate(filter, options);
+
+
+        res.render('users', {
+            users: result.docs,
+            totalPages: result.totalPages,
+            prevLink: result.hasPrevPage ? `/api/users?page=${result.page - 1}&limit=${options.limit}` : null,
+            nextLink: result.hasNextPage ? `/api/users?page=${result.page + 1}&limit=${options.limit}` : null,
+        });
+    } catch (error) {
+        req.logger.error("Error fetching users:", error)
+        res.status(500).send("Error fetching users.");
+    }
+})
+router.delete('/users/clean', authenticateLevel(2), async (req, res) => {
+    const deleted = await usersController.cleanUnconnectedUsers()
+    if (deleted === 'cleaned') {
+        res.json({message: "Users deleted, go back to panel and refresh to see the changes"})
+    } else {
+        res.json({message: "Something went wrong"})
+    }
+})
+router.get('/users/adminPanel', authenticateLevel(2), async (req, res) => {
+    const { limit, page, _id, } = req.query;
+
+    try {
+        const options = {
+            limit: limit ? parseInt(limit) : 1,
+            page: page ? parseInt(page) : 1,
+        };
+
+        const filter = {};
+
+        if (_id) {
+            filter._id = _id;
+        }
+        
+
+        const result = await userModel.paginate(filter, options);
+
+
+        res.render('usersAdminPanel', {
+            users: result.docs,
+            totalPages: result.totalPages,
+            prevLink: result.hasPrevPage ? `/api/users/adminPanel?page=${result.page - 1}&limit=${options.limit}` : null,
+            nextLink: result.hasNextPage ? `/api/users/adminPanel?page=${result.page + 1}&limit=${options.limit}` : null,
+        });
+    } catch (error) {
+        req.logger.error("Error fetching users:", error)
+        res.status(500).send("Error fetching users.");
+    }
+})
+router.post('/users/:uid/changeRoleByAdmin', authenticateLevel(2), async(req, res) => {
+    const uid = req.params.uid;
+    const user = await usersController.changeRol(uid)
+    if(user){
+        res.json({message: "Role Updated, go back to panel and refresh to see the changes"})
+    } else {
+        res.json({message: "Something went wrong"})
+    }
+})
+router.delete('/users/:uid/deleteUser', authenticateLevel(2), async (req, res) => {
+    const uid = req.params.uid;
+    const deleted = await usersController.deleteUser(uid)
+    if (deleted) {
+        res.json({message: "User deleted, go back to panel and refresh to see the changes "})
+    } else {
+        res.json({message: "Something went wrong"})
+    }
+})
 export default router
 
